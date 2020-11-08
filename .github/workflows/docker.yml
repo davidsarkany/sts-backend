@@ -1,0 +1,49 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron:  '0 4 * * *'
+
+env:
+  IMAGE_NAME: sts-backend
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          rm .dockerignore
+          docker build . --file Dockerfile --tag test
+          docker run -e "TOMTOM_API_KEY=${{ secrets.TOMTOM_API_KEY }}" -e "HEALTH_CHECK_TOKEN=${{ secrets.HEALTH_CHECK_TOKEN }}" -e "RATE_LIMIT_MAX=${{ secrets.RATE_LIMIT_MAX }}" -e "RATE_LIMIT_TIME_WINDOW=${{ secrets.RATE_LIMIT_TIME_WINDOW }}" --entrypoint sh test -c "npm ci && npm test"
+
+  push:
+    needs: test
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
