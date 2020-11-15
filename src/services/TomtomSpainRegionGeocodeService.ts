@@ -20,7 +20,7 @@ export default class TomtomSpainRegionGeocodeService implements SpainRegionGeoco
 
     async coordinateToRegion(latitude:number,longitude: number): Promise<RegionDescriptionType | null> {
         const url = this.requestUrlGenerator(latitude,longitude,this.radius);
-        const response = await axios.get(url);
+        const response = await axios.get(url,{timeout: 5000});
         const responseData = response.data as unknown | any;
         if(typeof responseData !== "object")
             throw new GeocodeException(`Unexcepted TomTom response ${latitude},${longitude}`);
