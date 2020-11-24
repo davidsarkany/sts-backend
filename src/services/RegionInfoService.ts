@@ -25,7 +25,7 @@ const database: RegionDescriptionType[] = [
     },
     {
         shortName: "CM",
-        longNameEn: "Castilla-La Mancha",
+        longNameEn: "Castile-La Mancha",
         longNameEs: "Castilla-La Mancha",
         longNameHu: "Kasztília-La Mancha",
         isoName: "CM"
@@ -46,7 +46,7 @@ const database: RegionDescriptionType[] = [
     },
     {
         shortName: "ML",
-        longNameEn: "Cetua",
+        longNameEn: "Ceuta",
         longNameEs: "Ciudad de Ceuta",
         longNameHu: "Ceuta",
         isoName: "ML"
@@ -67,7 +67,7 @@ const database: RegionDescriptionType[] = [
     },
     {
         shortName: "VC / CV",
-        longNameEn: "Valencian Community",
+        longNameEn: "Community of Valencia",
         longNameEs: "Comunidad Valenciana",
         longNameHu: "Valencia",
         isoName: "VC"
@@ -109,7 +109,7 @@ const database: RegionDescriptionType[] = [
     },
     {
         shortName: "PV",
-        longNameEn: "Basque Country",
+        longNameEn: "Basque Autonomous Community",
         longNameEs: "País Vasco",
         longNameHu: "Baszkföld",
         isoName: "PV"
