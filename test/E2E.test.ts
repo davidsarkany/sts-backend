@@ -41,7 +41,8 @@ describe("POST /api/geocode-spain-region - with invalid post data", () => {
             }
         });
         expect(response.statusCode).toEqual(200);
-        expect(JSON.parse(response.body)).toEqual({"status":"ERROR","region":null,"message":"NOT_IN_COUNTRY","service_info":{"name":"TomTom","accuracy":"HIGH"}});
+        expect(JSON.parse(response.body).status).toEqual("ERROR");
+        expect(JSON.parse(response.body).message).toEqual("NOT_IN_COUNTRY");
     });
 
     it('Test with valid coordinates', async () => {
