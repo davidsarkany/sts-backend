@@ -1,12 +1,8 @@
 import app from "../src/app";
 import dataset from "./E2EDataset"
+import sleep from "../src/utils/Sleep"
 
 jest.setTimeout(600000);
-function sleep(ms: number) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
 
 describe("POST /api/geocode-spain-region - with invalid post data", () => {
     it("Test invalid POST data", async () => {
