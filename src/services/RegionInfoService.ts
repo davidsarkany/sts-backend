@@ -134,6 +134,10 @@ export function findRegionByLongNameEs(longName: string):RegionDescriptionType|u
     return database.find(region => region.longNameEs == longName);
 }
 
+export function findRegionByLongNameEn(longName: string):RegionDescriptionType|undefined {
+    return database.find(region => region.longNameEn == longName);
+}
+
 export function findRegionByIsoName(isoName: string):RegionDescriptionType|undefined{
     return database.find(region => region.isoName == isoName);
 }

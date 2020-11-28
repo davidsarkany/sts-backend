@@ -1,8 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import fastify, { FastifyInstance } from 'fastify';
 import { IncomingMessage, Server, ServerResponse } from 'http';
 import fastifyFormBody from "fastify-formbody";
 import fastifyRateLimit from "fastify-rate-limit";
-import dotenv from "dotenv";
 import routes from "./routes";
 
 const getTrustProxySetting = () : boolean|string => {
@@ -14,9 +16,11 @@ const getTrustProxySetting = () : boolean|string => {
         return process.env.REVERSE_PROXY
 }
 
-dotenv.config();
 if(process.env.TOMTOM_API_KEY === undefined)
     throw Error("TOMTOM_API_KEY key missing in environment.");
+
+if(process.env.BIGDATACLOUD_API_KEY === undefined)
+    throw Error("BIGDATACLOUD_API_KEY key missing in environment.");
 
 if(process.env.RATE_LIMIT_MAX === undefined)
     throw Error("RATE_LIMIT_MAX key missing in environment.");

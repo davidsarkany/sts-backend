@@ -1,8 +1,8 @@
-import axios from "axios";
 import dotenv from "dotenv";
+dotenv.config();
+import axios from "axios";
 import TomtomSpainRegionGeocodeService from "../src/services/TomtomSpainRegionGeocodeService";
 
-dotenv.config();
 jest.mock("axios");
 
 afterEach(() => {

@@ -1,19 +1,20 @@
 import dotenv from "dotenv";
-import TomtomSpainRegionGeocodeService from "../src/services/TomtomSpainRegionGeocodeService";
-import { SpainRegionGeocodeProvider } from "../src/interfaces/SpainRegionGeocodeProvider";
+dotenv.config();
+import { getGeocodeProviderServicesList } from "../src/services/GeocodeProviderServicesListService";
 import sleep from "../src/utils/Sleep";
 import dataset from "./dataset/E2EDataset"
 
 jest.setTimeout(600000);
 dotenv.config();
 
-const providers: SpainRegionGeocodeProvider[] = [
-    new TomtomSpainRegionGeocodeService(process.env.TOMTOM_API_KEY!),
-];
+const providers = getGeocodeProviderServicesList();
 
 describe("E2E test with valid coordinate on geocoding providers",() => {
     for(const provider of providers) {
         for (const data of dataset) {
+            if(process.env.CI == "true" && provider.serviceInfo.name == "Big Data Cloud")
+                continue; //Big Data Cloud throw random timeout on GitHub CI
+
             it(`E2E test with ${data.iso} on ${provider.serviceInfo.name}`, async () => {
                     await sleep(1000);
                     const region = await provider.coordinateToRegion(+data.coordinate.latitude, +data.coordinate.longitude);

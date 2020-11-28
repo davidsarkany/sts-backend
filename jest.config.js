@@ -9,7 +9,8 @@ module.exports = {
         "js"
     ],
     coveragePathIgnorePatterns: [
-        "<rootDir>/test/dataset"
+        "<rootDir>/test/dataset",
+        "<rootDir>/test/mock"
     ],
     transform: {
         "^.+\\.(ts|tsx)$": "ts-jest"

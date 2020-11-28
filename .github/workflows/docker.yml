@@ -20,7 +20,7 @@ jobs:
         run: |
           rm .dockerignore
           docker build . --file Dockerfile --tag test
-          docker run -e "TOMTOM_API_KEY=${{ secrets.TOMTOM_API_KEY }}" -e "HEALTH_CHECK_TOKEN=${{ secrets.HEALTH_CHECK_TOKEN }}" -e "RATE_LIMIT_MAX=${{ secrets.RATE_LIMIT_MAX }}" -e "RATE_LIMIT_TIME_WINDOW=${{ secrets.RATE_LIMIT_TIME_WINDOW }}" --entrypoint sh test -c "npm ci && npm test"
+          docker run -e "TOMTOM_API_KEY=${{ secrets.TOMTOM_API_KEY }}" -e "BIGDATACLOUD_API_KEY=${{ secrets.BIGDATACLOUD_API_KEY }}" -e "CI=true" -e "HEALTH_CHECK_TOKEN=${{ secrets.HEALTH_CHECK_TOKEN }}" -e "RATE_LIMIT_MAX=${{ secrets.RATE_LIMIT_MAX }}" -e "RATE_LIMIT_TIME_WINDOW=${{ secrets.RATE_LIMIT_TIME_WINDOW }}" --entrypoint sh test -c "npm ci && npm test"
 
   push:
     needs: test

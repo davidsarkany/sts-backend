@@ -26,6 +26,7 @@ jobs:
       - run: npm test
         env:
           TOMTOM_API_KEY: ${{ secrets.TOMTOM_API_KEY }}
+          BIGDATACLOUD_API_KEY: ${{ secrets.BIGDATACLOUD_API_KEY }}
           RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
           RATE_LIMIT_TIME_WINDOW: ${{ secrets.RATE_LIMIT_TIME_WINDOW }}
           HEALTH_CHECK_TOKEN: ${{ secrets.HEALTH_CHECK_TOKEN }}

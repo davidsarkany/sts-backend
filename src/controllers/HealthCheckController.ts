@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import TomtomSpainRegionGeocodeService from "../services/TomtomSpainRegionGeocodeService";
+import { getGeocodeProviderServicesList } from "../services/GeocodeProviderServicesListService";
 
 export const healthCheck = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const queryParam = request.query as any;
@@ -8,15 +8,22 @@ export const healthCheck = async (request: FastifyRequest, reply: FastifyReply):
         return;
     }
 
-    try{
-        const tomtomSpainRegionGeocodeService = new TomtomSpainRegionGeocodeService(process.env.TOMTOM_API_KEY!);
-        const tomtomResult = await tomtomSpainRegionGeocodeService.coordinateToRegion(37.392529,-5.994072);
-        if(tomtomResult === null || tomtomResult.isoName !== "AN")
-            throw new Error("TomTom error");
-        reply.status(200).send({tomtom: true});
-    } catch(ex) {
-        request.log.warn(ex.message);
-        reply.status(500).send({tomtom: false});
-    }
+    const response:{pass:Array<string>, fail:Array<string>} = {pass: [], fail: []};
 
+    await Promise.all(
+        getGeocodeProviderServicesList().map((provider) => {
+            return provider.coordinateToRegion(37.392529,-5.994072)
+                .then(result => {
+                    if(result === null || result.isoName !== "AN")
+                        throw new Error(`Invalid response incorrect result`);
+                    response.pass.push(provider.serviceInfo.name);
+                })
+                .catch(error => {
+                    response.fail.push(provider.serviceInfo.name);
+                    console.error(`[${provider.serviceInfo.name}] ${error.message}`)
+                });
+        })
+    );
+
+    reply.status(response.fail.length == 0 ? 200 : 500).send(response);
 }

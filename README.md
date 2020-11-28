@@ -11,13 +11,15 @@ I abandoned this project, but the Laravel framework in the previous backend reac
 
 ## How to use
 1. Register into [TomTom developer page](https://developer.tomtom.com/) and copy the API key.
-2. Generate a long random string for health check token.
+2. Register into [Big Data Cloud](https://www.bigdatacloud.com/) and copy the API key.
+3. Generate a long random string for health check token.
 
 
 ### Use with Docker
 ```
 docker run -d \
             -e "TOMTOM_API_KEY=REPLEACE-WITH-YOUR-KEY" \
+            -e "BIGDATACLOUD_API_KEY=REPLEACE-WITH-YOUR-KEY" \
             -e "RATE_LIMIT_MAX=60" \
             -e "RATE_LIMIT_TIME_WINDOW=10 minute" \
             -e "PORT=8080" \
@@ -29,10 +31,13 @@ docker run -d \
 
 ### Use with NPM
 Rename the `.env.example` file to `.env`. \
-Replace the TOMTOM_API_KEY and HEALTH_CHECK_TOKEN with your tokens. \
+Replace the TOMTOM_API_KEY, BIGDATACLOUD_API_KEY and HEALTH_CHECK_TOKEN with your tokens. \
 Run the following commands:
 ```
 npm install
 npm run build --if-present
 npm start
 ```
+
+## Known issue
+GitHub Action CI gets random HTTP timeout from Big Data Cloud. For this reason, the Big Data Cloud E2E tests excluded from CI.
