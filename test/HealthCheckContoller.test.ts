@@ -1,10 +1,11 @@
 import app from "../src/app";
-import axios from 'axios';
+import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
+afterEach(() => { jest.resetAllMocks(); });
+
 describe("Check GET /api/health-check", () => {
-    afterEach(() => { jest.resetAllMocks(); });
 
     it("TomTom provider return invalid data", async () => {
         const axiosResponse = {data: {"INVALID": true}};

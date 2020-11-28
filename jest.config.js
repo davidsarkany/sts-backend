@@ -8,6 +8,9 @@ module.exports = {
         "ts",
         "js"
     ],
+    coveragePathIgnorePatterns: [
+        "<rootDir>/test/dataset"
+    ],
     transform: {
         "^.+\\.(ts|tsx)$": "ts-jest"
     },

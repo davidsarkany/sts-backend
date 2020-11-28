@@ -1,6 +1,6 @@
 import app from "../src/app";
-import dataset from "./E2EDataset"
-import sleep from "../src/utils/Sleep"
+import dataset from "./dataset/E2EDataset";
+import sleep from "../src/utils/Sleep";
 
 jest.setTimeout(600000);
 
@@ -10,8 +10,8 @@ describe("POST /api/geocode-spain-region - with invalid post data", () => {
             method: "POST",
             url: "/api/geocode-spain-region",
             payload: {
-                longitude: 'invalid',
-                latitude: 'invalid'
+                longitude: "invalid",
+                latitude: "invalid"
             }
         });
         expect(response.statusCode).toEqual(200);
@@ -33,8 +33,8 @@ describe("POST /api/geocode-spain-region - with invalid post data", () => {
             method: "POST",
             url: "/api/geocode-spain-region",
             payload: {
-                longitude: '47.5011151657',
-                latitude: '19.0531965145'
+                longitude: "47.5011151657",
+                latitude: "19.0531965145"
             }
         });
         expect(response.statusCode).toEqual(200);
@@ -42,19 +42,21 @@ describe("POST /api/geocode-spain-region - with invalid post data", () => {
         expect(JSON.parse(response.body).message).toEqual("NOT_IN_COUNTRY");
     });
 
-    it('Test with valid coordinates', async () => {
-        for (const testData of dataset) {
-            const response = await app.inject({
-                method: "POST",
-                url: "/api/geocode-spain-region",
-                payload: {
-                    longitude: testData.coordinate.longitude,
-                    latitude: testData.coordinate.latitude,
-                }
-            });
-            await sleep(1000);
-            expect(response.statusCode).toEqual(200);
-            expect(JSON.parse(response.body).region.iso_name).toEqual(testData.iso);
-        }
+});
+
+describe("POST /api/geocode-spain-region - with dataset element", () => {
+    it(`Test with ${dataset[0].iso}`, async () => {
+        const response = await app.inject({
+            method: "POST",
+            url: "/api/geocode-spain-region",
+            payload: {
+                longitude: dataset[0].coordinate.longitude,
+                latitude: dataset[0].coordinate.latitude,
+            }
+        });
+        await sleep(1000);
+        expect(response.statusCode).toEqual(200);
+        expect(JSON.parse(response.body).region.iso_name).toEqual(dataset[0].iso);
     });
+
 });
