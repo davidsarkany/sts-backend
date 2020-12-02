@@ -17,6 +17,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_TOMTOM_API_KEY: ${{ secrets.TOMTOM_API_KEY }}
+          envkey_BIGDATACLOUD_API_KEY: ${{ secrets.BIGDATACLOUD_API_KEY }}
+          envkey_RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
+          envkey_RATE_LIMIT_TIME_WINDOW: ${{ secrets.RATE_LIMIT_TIME_WINDOW }}
+          envkey_HEALTH_CHECK_TOKEN: ${{ secrets.HEALTH_CHECK_TOKEN }}
+          file_name: .env
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -24,9 +33,3 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-        env:
-          TOMTOM_API_KEY: ${{ secrets.TOMTOM_API_KEY }}
-          BIGDATACLOUD_API_KEY: ${{ secrets.BIGDATACLOUD_API_KEY }}
-          RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
-          RATE_LIMIT_TIME_WINDOW: ${{ secrets.RATE_LIMIT_TIME_WINDOW }}
-          HEALTH_CHECK_TOKEN: ${{ secrets.HEALTH_CHECK_TOKEN }}
