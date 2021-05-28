@@ -26,7 +26,7 @@ docker run -d \
             -e "REVERSE_PROXY=enabled" \
             -e "HEALTH_CHECK_TOKEN=REPLEACE-WITH-YOUR-KEY" \
             -p 8080:8080 \
-            docker.pkg.github.com/davidsarkany/sts-backend/sts-backend:latest
+            ghcr.io/davidsarkany/sts-backend:latest
 ```
 
 ### Use with NPM
